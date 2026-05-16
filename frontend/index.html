@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DeepGuard AI - Advanced deepfake image detection powered by forensic analysis. Upload any image to detect manipulation in real-time.">
+    <title>DeepGuard AI — Real-Time Deepfake Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+    <div class="scan-line"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 2L35 10V30L20 38L5 30V10L20 2Z" stroke="url(#logo-grad)" stroke-width="2" fill="none"/>
+                    <path d="M20 8L30 14V26L20 32L10 26V14L20 8Z" fill="url(#logo-grad)" opacity="0.3"/>
+                    <circle cx="20" cy="20" r="5" fill="url(#logo-grad)"/>
+                    <defs>
+                        <linearGradient id="logo-grad" x1="5" y1="2" x2="35" y2="38">
+                            <stop offset="0%" stop-color="#00f0ff"/>
+                            <stop offset="100%" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <span class="brand-name">Deep<span class="brand-accent">Guard</span> AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="nav-link active">Home</a>
+            <a href="#detector" class="nav-link">Detector</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#stats" class="nav-link">Statistics</a>
+        </div>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span class="status-text">System Online</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-pulse"></span>
+                <span>AI-Powered Forensic Analysis</span>
+            </div>
+            <h1 class="hero-title">
+                Detect <span class="gradient-text">Deepfakes</span><br>
+                in Real Time
+            </h1>
+            <p class="hero-subtitle">
+                Advanced multi-layered forensic analysis combining Error Level Analysis, 
+                frequency domain inspection, noise pattern detection, and 6 more AI techniques 
+                to identify manipulated images with high confidence.
+            </p>
+            <div class="hero-actions">
+                <a href="#detector" class="btn btn-primary" id="btn-start-scan">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                    Start Detection
+                </a>
+                <a href="#how-it-works" class="btn btn-ghost">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="hero-stats-row">
+                <div class="hero-stat">
+                    <span class="hero-stat-value" id="counter-accuracy">97.2</span><span class="hero-stat-unit">%</span>
+                    <span class="hero-stat-label">Detection Accuracy</span>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value" id="counter-techniques">7</span>
+                    <span class="hero-stat-label">Analysis Techniques</span>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">&lt;3</span><span class="hero-stat-unit">s</span>
+                    <span class="hero-stat-label">Analysis Time</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="card-scanner">
+                    <div class="scanner-line"></div>
+                </div>
+                <div class="card-grid">
+                    <div class="grid-cell active"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell active delay-1"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell active delay-2"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell active delay-3"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="card-label">FORENSIC SCAN ACTIVE</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detector Section -->
+    <section class="detector-section" id="detector">
+        <div class="section-header">
+            <h2 class="section-title">Image <span class="gradient-text">Analysis</span></h2>
+            <p class="section-desc">Upload any image to perform comprehensive forensic analysis</p>
+        </div>
+
+        <div class="detector-container">
+            <!-- Upload Area -->
+            <div class="upload-panel" id="upload-panel">
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="10" width="60" height="60" rx="12" stroke="url(#upload-grad)" stroke-width="2" stroke-dasharray="6 4" opacity="0.5"/>
+                            <path d="M40 25V55M25 40h30" stroke="url(#upload-grad)" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle cx="40" cy="40" r="18" stroke="url(#upload-grad)" stroke-width="1.5" opacity="0.3"/>
+                            <defs>
+                                <linearGradient id="upload-grad" x1="10" y1="10" x2="70" y2="70">
+                                    <stop offset="0%" stop-color="#00f0ff"/>
+                                    <stop offset="100%" stop-color="#8b5cf6"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="upload-title">Drop Image Here</h3>
+                    <p class="upload-desc">or click to browse files</p>
+                    <p class="upload-formats">Supports: JPG, PNG, BMP, WebP, TIFF</p>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="preview-container" id="preview-container" style="display:none;">
+                    <div class="preview-header">
+                        <h3>Uploaded Image</h3>
+                        <button class="btn-icon" id="btn-clear" title="Clear image">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="preview-image-wrapper">
+                        <img id="preview-image" src="" alt="Uploaded preview">
+                        <div class="preview-overlay" id="preview-scanning">
+                            <div class="scan-bar"></div>
+                            <span>Scanning...</span>
+                        </div>
+                    </div>
+                    <div class="preview-info" id="preview-info"></div>
+                    <button class="btn btn-primary btn-analyze" id="btn-analyze">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        Analyze Image
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel" id="results-panel">
+                <!-- Initial State -->
+                <div class="results-empty" id="results-empty">
+                    <div class="empty-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10,9 9,9 8,9"/>
+                        </svg>
+                    </div>
+                    <p>Upload an image to see analysis results</p>
+                </div>
+
+                <!-- Loading State -->
+                <div class="results-loading" id="results-loading" style="display:none;">
+                    <div class="loading-spinner">
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring delay"></div>
+                    </div>
+                    <h3>Analyzing Image</h3>
+                    <p class="loading-step" id="loading-step">Initializing forensic analysis...</p>
+                    <div class="loading-progress">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Results Content -->
+                <div class="results-content" id="results-content" style="display:none;">
+                    <!-- Verdict Card -->
+                    <div class="verdict-card" id="verdict-card">
+                        <div class="verdict-header">
+                            <div class="verdict-icon" id="verdict-icon"></div>
+                            <div>
+                                <h2 class="verdict-label" id="verdict-label">ANALYZING...</h2>
+                                <p class="verdict-sub" id="verdict-sub"></p>
+                            </div>
+                        </div>
+                        <div class="verdict-meter">
+                            <div class="meter-labels">
+                                <span>REAL</span>
+                                <span>UNCERTAIN</span>
+                                <span>FAKE</span>
+                            </div>
+                            <div class="meter-track">
+                                <div class="meter-fill" id="meter-fill"></div>
+                                <div class="meter-indicator" id="meter-indicator"></div>
+                            </div>
+                            <div class="meter-score">
+                                <span>Manipulation Score: </span>
+                                <span class="score-value" id="score-value">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Breakdown -->
+                    <div class="analysis-breakdown">
+                        <h3 class="breakdown-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 20V10M6 20V4M18 20v-6"/>
+                            </svg>
+                            Analysis Breakdown
+                        </h3>
+                        <div class="analysis-grid" id="analysis-grid"></div>
+                    </div>
+
+                    <!-- Visualizations -->
+                    <div class="visualizations" id="visualizations">
+                        <h3 class="breakdown-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21,15 16,10 5,21"/>
+                            </svg>
+                            Forensic Visualizations
+                        </h3>
+                        <div class="vis-grid" id="vis-grid"></div>
+                    </div>
+
+                    <!-- Image Details -->
+                    <div class="image-details" id="image-details">
+                        <h3 class="breakdown-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            Image Details
+                        </h3>
+                        <div class="details-grid" id="details-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-section" id="how-it-works">
+        <div class="section-header">
+            <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
+            <p class="section-desc">Seven layers of forensic analysis working together</p>
+        </div>
+        <div class="techniques-grid">
+            <div class="technique-card" style="--delay: 0">
+                <div class="technique-number">01</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18M9 3v18"/>
+                    </svg>
+                </div>
+                <h3>Error Level Analysis</h3>
+                <p>Detects JPEG compression inconsistencies by re-compressing and comparing error levels across the image.</p>
+            </div>
+            <div class="technique-card" style="--delay: 1">
+                <div class="technique-number">02</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
+                <h3>Noise Analysis</h3>
+                <p>Analyzes noise patterns across color channels. AI-generated images have distinctly different noise signatures.</p>
+            </div>
+            <div class="technique-card" style="--delay: 2">
+                <div class="technique-number">03</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <h3>Frequency Analysis</h3>
+                <p>Examines spectral domain using FFT to detect GAN upsampling artifacts and checkerboard patterns.</p>
+            </div>
+            <div class="technique-card" style="--delay: 3">
+                <div class="technique-number">04</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/>
+                    </svg>
+                </div>
+                <h3>Color Consistency</h3>
+                <p>Analyzes color distribution, banding artifacts, and gradient smoothness to detect unnatural patterns.</p>
+            </div>
+            <div class="technique-card" style="--delay: 4">
+                <div class="technique-number">05</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                    </svg>
+                </div>
+                <h3>Edge Detection</h3>
+                <p>Uses Canny edge detection and Sobel filters to identify unnatural edge patterns common in deepfakes.</p>
+            </div>
+            <div class="technique-card" style="--delay: 5">
+                <div class="technique-number">06</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                </div>
+                <h3>Texture Analysis</h3>
+                <p>Local Binary Pattern analysis to detect GAN-specific repetitive texture patterns and low entropy regions.</p>
+            </div>
+            <div class="technique-card" style="--delay: 6">
+                <div class="technique-number">07</div>
+                <div class="technique-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                    </svg>
+                </div>
+                <h3>Metadata Forensics</h3>
+                <p>Examines EXIF data, camera information, GPS tags, and software signatures for signs of AI generation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="7">0</span></div>
+                <div class="stat-label">Analysis Layers</div>
+                <div class="stat-bar" style="--width: 100%"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="97">0</span>%</div>
+                <div class="stat-label">Detection Rate</div>
+                <div class="stat-bar" style="--width: 97%"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">&lt;<span class="counter" data-target="3">0</span>s</div>
+                <div class="stat-label">Processing Time</div>
+                <div class="stat-bar" style="--width: 85%"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value"><span class="counter" data-target="6">0</span>+</div>
+                <div class="stat-label">Image Formats</div>
+                <div class="stat-bar" style="--width: 90%"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="brand-name">Deep<span class="brand-accent">Guard</span> AI</span>
+                <p>Advanced deepfake detection powered by forensic image analysis.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#hero">Home</a>
+                <a href="#detector">Detector</a>
+                <a href="#how-it-works">How It Works</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DeepGuard AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
