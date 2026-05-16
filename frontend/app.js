@@ -3,7 +3,7 @@
  * Handles image upload, API communication, and results rendering
  */
 
-const API_BASE = window.location.origin;
+const API_BASE = 'https://authentiscan-6xwk.onrender.com';
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
