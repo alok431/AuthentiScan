@@ -638,23 +638,58 @@ def analyze_image():
         if file.filename == '':
             return jsonify({'error': 'No file selected'}), 400
 
-        # Validate file type
-        allowed_extensions = {'png', 'jpg', 'jpeg', 'bmp', 'webp', 'tiff'}
-        ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
-        if ext not in allowed_extensions:
-            return jsonify({'error': f'Unsupported file type: {ext}. Supported: {", ".join(allowed_extensions)}'}), 400
-
         # Read the image
         image_data = file.read()
-        image = Image.open(io.BytesIO(image_data))
+        try:
+            image = Image.open(io.BytesIO(image_data))
+            image.load()  # Force load image data to prevent lazy-loading issues
+        except Exception as e:
+            return jsonify({'error': f'Invalid or corrupted image: {str(e)}'}), 400
+
+        # Validate file type using filename extension, Pillow detected format, and MIME type
+        allowed_extensions = {'png', 'jpg', 'jpeg', 'bmp', 'webp', 'tiff'}
+        ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
+        
+        # Fallback to Pillow's detected format if filename has no valid extension
+        if ext not in allowed_extensions:
+            pil_format = (image.format or '').lower()
+            if pil_format == 'jpeg':
+                pil_format = 'jpg'
+            
+            if pil_format in allowed_extensions:
+                ext = pil_format
+            elif file.content_type and file.content_type.startswith('image/'):
+                mime_ext = file.content_type.split('/')[-1].lower()
+                if mime_ext in ('jpeg', 'pjpeg'):
+                    mime_ext = 'jpg'
+                elif mime_ext == 'x-png':
+                    mime_ext = 'png'
+                if mime_ext in allowed_extensions:
+                    ext = mime_ext
+
+        if ext not in allowed_extensions:
+            return jsonify({'error': f'Unsupported file type: {ext or "unknown"}. Supported: {", ".join(allowed_extensions)}'}), 400
+        
+        # Save original metadata before potential resizing
+        orig_width, orig_height = image.size
+        orig_format = image.format or ext.upper()
+        
+        # Downscale image if it is too large to prevent Out-Of-Memory (OOM) crashes on Render
+        # 1024px max dimension is optimal for forensic checks while preserving low RAM usage
+        MAX_DIM = 1024
+        if max(orig_width, orig_height) > MAX_DIM:
+            scale = MAX_DIM / max(orig_width, orig_height)
+            new_w = int(orig_width * scale)
+            new_h = int(orig_height * scale)
+            image = image.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
         # Basic image info
         image_info = {
             'filename': file.filename,
-            'format': image.format or ext.upper(),
-            'size': f'{image.size[0]}x{image.size[1]}',
-            'width': image.size[0],
-            'height': image.size[1],
+            'format': orig_format,
+            'size': f'{orig_width}x{orig_height}',
+            'width': orig_width,
+            'height': orig_height,
             'mode': image.mode,
             'file_size': len(image_data)
         }

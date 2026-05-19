@@ -87,7 +87,18 @@ uploadZone.addEventListener('drop', (e) => {
     e.preventDefault();
     uploadZone.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) handleFile(file);
+    if (file) {
+        const isImageMime = file.type.startsWith('image/');
+        const isNoMime = file.type === '';
+        const ext = file.name.split('.').pop().toLowerCase();
+        const isImageExt = ['png', 'jpg', 'jpeg', 'bmp', 'webp', 'tiff'].includes(ext);
+        
+        if (isImageMime || isImageExt || isNoMime) {
+            handleFile(file);
+        } else {
+            alert('Please drop a valid image file (PNG, JPG, BMP, WebP, TIFF).');
+        }
+    }
 });
 
 fileInput.addEventListener('change', (e) => {
